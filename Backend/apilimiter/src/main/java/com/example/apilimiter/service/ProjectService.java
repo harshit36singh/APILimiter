@@ -43,4 +43,28 @@ public class ProjectService {
 
     }
 
+    public Project getproject(User owner, Long projectId) {
+        return projectRepo.findByIdandOwnerId(projectId, owner.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Project not found."));
+
+    }
+
+    public Project updateProject(User owner, Long id, ProjectRequest req) {
+        Project project = getproject(owner, id);
+
+        if (req.getName() != null)
+            project.setName(req.getName());
+        if (req.getDesc() != null)
+            project.setDesc(req.getDesc());
+
+        return projectRepo.save(project);
+
+    }
+
+    @Transactional
+    public void deleteProject(User owner, Long id) {
+        Project project = getproject(owner, id);
+        projectRepo.delete(project);
+    }
+
 }
