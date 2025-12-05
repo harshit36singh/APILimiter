@@ -54,6 +54,9 @@ public class Project {
 
 
     private String shortname;
+    
+
+    private String api_url;
 
 
 
