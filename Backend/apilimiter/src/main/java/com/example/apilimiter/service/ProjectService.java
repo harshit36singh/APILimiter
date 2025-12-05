@@ -37,6 +37,7 @@ public class ProjectService {
         }
 
         Project project = Project.builder().name(req.getName()).shortname(shortname).desc(req.getDesc()).owner(owner)
+                .api_url(req.getApi_url())
                 .createdAt(Instant.now()).updatedAt(Instant.now()).build();
 
         return projectRepo.save(project);

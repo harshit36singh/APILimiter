@@ -12,4 +12,5 @@ public class ProjectResponse {
     private Instant createdAt;
     private Instant updatedAt;
     private String shortname;
+    private String api_url;
 }

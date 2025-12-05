@@ -7,6 +7,7 @@ public class ProjectRequest {
     private String name;
     private String desc;
     private String shortname;
+    private String api_url;
 
 
 }
