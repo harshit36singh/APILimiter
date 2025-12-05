@@ -53,6 +53,9 @@ public class Project {
     private Instant updatedAt=Instant.now();
 
 
+    private String shortname;
+
+
 
 
 }

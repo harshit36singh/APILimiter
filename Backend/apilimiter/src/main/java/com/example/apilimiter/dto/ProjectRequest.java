@@ -6,6 +6,7 @@ import lombok.Data;
 public class ProjectRequest {
     private String name;
     private String desc;
-    
+    private String shortname;
+
 
 }

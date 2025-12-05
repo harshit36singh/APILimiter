@@ -11,4 +11,5 @@ public class ProjectResponse {
     private String desc;
     private Instant createdAt;
     private Instant updatedAt;
+    private String shortname;
 }
