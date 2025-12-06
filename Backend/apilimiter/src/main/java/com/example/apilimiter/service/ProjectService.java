@@ -32,7 +32,7 @@ public class ProjectService {
                 : req.getShortname();
         int shortnameuniqueno = 1;
         String b = shortname;
-        while (projectRepo.existsByOwnerandShortname(owner.getId(), shortname)) {
+        while (projectRepo.existsByOwnerIdAndShortname(owner.getId(), shortname)) {
             shortname = b + "-" + shortnameuniqueno++;
         }
 
@@ -45,7 +45,7 @@ public class ProjectService {
     }
 
     public Project getproject(User owner, Long projectId) {
-        return projectRepo.findByIdandOwnerId(projectId, owner.getId())
+        return projectRepo.findByIdAndOwnerId(projectId, owner.getId())
                 .orElseThrow(() -> new IllegalArgumentException("Project not found."));
 
     }
