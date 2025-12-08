@@ -17,9 +17,8 @@ public class ClientUseAPIService {
     private final RestTemplate restTemplate;
     private final ProjectRepo projectRepo;
 
-    public Object fetchByShortname(String shortname){
-        Project project=projectRepo.findByShortname(shortname).orElseThrow(()->new IllegalArgumentException("the project not found"));
-        return restTemplate.getForObject(project.getApi_url(), Object.class);
+    public Object fetch(String apiUrl){
+       return restTemplate.getForObject(apiUrl, Object.class);
 
     }
 }

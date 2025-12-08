@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class LogService {
     private final LogRepo logRepo;
 
-    public void logvisit(Long projectId, Long userId, String ip) {
+    public void logvisit(Long projectId, String ip) {
         Log log = Log.builder().projectId(projectId).ipAddress(ip).timestamp(Instant.now()).build();
         logRepo.save(log);
     }

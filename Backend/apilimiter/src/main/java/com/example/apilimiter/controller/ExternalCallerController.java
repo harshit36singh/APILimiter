@@ -40,7 +40,7 @@ public class ExternalCallerController {
 
         String ipaddress=req.getRemoteAddr();
 
-        logService.logvisit(project.getId(),userId,ipaddress);
+        logService.logvisit(project.getId(),ipaddress);
 
 
         String res;
