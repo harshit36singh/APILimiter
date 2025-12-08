@@ -21,7 +21,7 @@ public class AuthUtil {
     @Value("${jwt.secretkey}")
     private String jwtSecretkey;
 
-    private SecretKey getsecretkey() {
+    SecretKey getsecretkey() {
         return Keys.hmacShaKeyFor(jwtSecretkey.getBytes(StandardCharsets.UTF_8));
     }
 

@@ -36,7 +36,7 @@ public class ProjectService {
             shortname = b + "-" + shortnameuniqueno++;
         }
 
-        Project project = Project.builder().name(req.getName()).shortname(shortname).desc(req.getDesc()).owner(owner)
+        Project project = Project.builder().name(req.getName()).shortname(shortname).des(req.getDes()).owner(owner)
                 .api_url(req.getApi_url())
                 .createdAt(Instant.now()).updatedAt(Instant.now()).build();
 
@@ -55,8 +55,8 @@ public class ProjectService {
 
         if (req.getName() != null)
             project.setName(req.getName());
-        if (req.getDesc() != null)
-            project.setDesc(req.getDesc());
+        if (req.getDes() != null)
+            project.setDes(req.getDes());
 
         return projectRepo.save(project);
 

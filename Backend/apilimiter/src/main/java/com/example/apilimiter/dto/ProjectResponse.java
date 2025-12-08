@@ -8,7 +8,7 @@ import lombok.Data;
 public class ProjectResponse {
     private Long id;
     private String name;
-    private String desc;
+    private String des;
     private Instant createdAt;
     private Instant updatedAt;
     private String shortname;
