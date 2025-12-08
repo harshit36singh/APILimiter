@@ -30,7 +30,7 @@ private final UserDetailsService userDetailsService;
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
             .csrf(csrf -> csrf.disable())
            .authorizeHttpRequests(auth -> auth
-        .requestMatchers( "/login/**", "/register/**", "/auth/**").permitAll()
+        .requestMatchers( "/login/**", "/register/**", "/auth/**","/apilimiter/**").permitAll()
         .requestMatchers("/projects/**").authenticated()
         .anyRequest().authenticated()
 )
