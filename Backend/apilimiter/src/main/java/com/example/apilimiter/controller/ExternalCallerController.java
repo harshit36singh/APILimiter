@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.example.apilimiter.entities.Project;
-import com.example.apilimiter.entities.User;
 import com.example.apilimiter.repositories.ProjectRepo;
 import com.example.apilimiter.service.LogService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +21,6 @@ public class ExternalCallerController {
 
     private final ProjectRepo projectRepo;
     private final LogService logService;
-
-
     private final RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping("/{id}")
@@ -32,11 +29,6 @@ public class ExternalCallerController {
         Project project = projectRepo.findByShortname(projectshortname)
                 .orElseThrow(() -> new IllegalArgumentException("No such Api-Project found."));
         String url = project.getApi_url();
-
-        Long userId=null;
-        if(auth!=null && auth.isAuthenticated()){
-            userId=((User) auth.getPrincipal()).getId();
-        }
 
         String ipaddress=req.getRemoteAddr();
 

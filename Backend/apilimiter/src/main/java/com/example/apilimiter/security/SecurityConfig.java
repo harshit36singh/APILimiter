@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,21 +22,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-private final JwtAuthenticationFilter jwt;
-private final UserDetailsService userDetailsService;
-    
+    private final JwtAuthenticationFilter jwt;
+    private final UserDetailsService userDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
-            .csrf(csrf -> csrf.disable())
-           .authorizeHttpRequests(auth -> auth
-        .requestMatchers( "/login/**", "/register/**", "/auth/**","/apilimiter/**").permitAll()
-        .requestMatchers("/projects/**").authenticated()
-        .anyRequest().authenticated()
-)
-.addFilterBefore(jwt, UsernamePasswordAuthenticationFilter.class);
-
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() 
+                        .requestMatchers("/auth/login", "/auth/register").permitAll()
+                        .requestMatchers("/projects/**").authenticated()
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwt, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -46,8 +46,8 @@ private final UserDetailsService userDetailsService;
         config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization"));
         config.setAllowCredentials(true);
-        config.setMaxAge(3600L); // Cache preflight for 1 hour
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
@@ -55,13 +55,13 @@ private final UserDetailsService userDetailsService;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
