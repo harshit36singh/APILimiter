@@ -19,21 +19,19 @@ import com.example.apilimiter.dto.ProjectResponse;
 import com.example.apilimiter.entities.Project;
 import com.example.apilimiter.entities.User;
 import com.example.apilimiter.service.ProjectService;
+import com.example.apilimiter.util.UserAuthHelper;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/projects")
 @RequiredArgsConstructor
-public class ProjectController {
+public class ProjectController extends UserAuthHelper{
 
     private final ProjectService projectService;
     private final ModelMapper mapper;
 
-    private User getUser(Authentication auth) {
-        return (User) auth.getPrincipal();
-    }
-
+    
     @GetMapping
     public ResponseEntity<List<ProjectResponse>> list(Authentication auth) {
         User user = getUser(auth);
