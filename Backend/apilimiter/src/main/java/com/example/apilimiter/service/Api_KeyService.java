@@ -1,7 +1,13 @@
 package com.example.apilimiter.service;
 
+import java.net.ResponseCache;
+import java.time.Instant;
 import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.example.apilimiter.dto.Api_KeyResponse;
 import com.example.apilimiter.entities.Api_Key;
 import com.example.apilimiter.entities.Project;
 import com.example.apilimiter.entities.User;
@@ -18,7 +24,7 @@ public class Api_KeyService {
     private final ProjectRepo projectRepo;
     private final Api_Key_Generator api_Key_Generator;
 
-    public Api_Key createkey(User owner, Long pid) {
+    public ResponseEntity<Api_KeyResponse> createkey(User owner, Long pid) {
         Project project = projectRepo.findById(pid)
                 .orElseThrow(() -> new IllegalArgumentException("Can't find this project ."));
 
@@ -26,9 +32,16 @@ public class Api_KeyService {
             throw new IllegalArgumentException("Unauthorized");
         }
 
-        Api_Key api_key = Api_Key.builder().keyValue(api_Key_Generator.generateapikey()).project(project).build();
+        Api_Key api_key = Api_Key.builder().keyValue(api_Key_Generator.generateapikey()).project(project)
+                .createdAt(Instant.now()).build();
 
-        return api_KeyRepo.save(api_key);
+    api_KeyRepo.save(api_key);
+
+    return ResponseEntity.ok(new Api_KeyResponse(
+        api_key.getId(),
+        api_key.getKeyValue(),
+        api_key.getCreatedAt()
+    ));
     }
 
     public List<Api_Key> getallapikeyforaparticularproject(User owner, Long projectid) {

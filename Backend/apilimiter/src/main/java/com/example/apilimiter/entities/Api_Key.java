@@ -2,6 +2,9 @@ package com.example.apilimiter.entities;
 
 import java.time.Instant;
 
+import org.springframework.data.annotation.CreatedDate;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +40,8 @@ public class Api_Key {
     @JoinColumn(name="project_id")
     private Project project;
 
-    private Instant createdBy=Instant.now();
+    @Column(nullable = false,updatable = false)
+    private Instant createdAt;
 
 
 }
