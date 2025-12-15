@@ -28,22 +28,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
+    // ✅ Override this method to skip certain paths
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        System.out.println("Checking if should filter: " + path);
+        
+        boolean skip = path.startsWith("/auth") || 
+                       path.startsWith("/apilimiter") ||
+                       request.getMethod().equals("OPTIONS");
+        
+        System.out.println("Skip filter: " + skip);
+        return skip;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        String path = request.getServletPath();
-        System.out.println("REQUEST PATH -> " + path);
-
-        if (path.startsWith("/auth") ||
-
-                request.getMethod().equals("OPTIONS")) {
-
-            filterChain.doFilter(request, response);
-            return;
-        }
+        System.out.println("JWT Filter processing: " + request.getRequestURI());
 
         String authHeader = request.getHeader("Authorization");
 
@@ -80,4 +85,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }

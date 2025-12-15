@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Api_KeyResponse {
+public class Api_KeyResponseDto {
     Long id;
     String apikey;
     Instant CreatedAt;

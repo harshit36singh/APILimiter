@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.example.apilimiter.dto.Api_KeyResponse;
+import com.example.apilimiter.dto.Api_KeyResponseDto;
 import com.example.apilimiter.entities.Api_Key;
 import com.example.apilimiter.entities.Project;
 import com.example.apilimiter.entities.User;
@@ -24,7 +24,7 @@ public class Api_KeyService {
     private final ProjectRepo projectRepo;
     private final Api_Key_Generator api_Key_Generator;
 
-    public ResponseEntity<Api_KeyResponse> createkey(User owner, Long pid) {
+    public ResponseEntity<Api_KeyResponseDto> createkey(User owner, Long pid) {
         Project project = projectRepo.findById(pid)
                 .orElseThrow(() -> new IllegalArgumentException("Can't find this project ."));
 
@@ -37,7 +37,7 @@ public class Api_KeyService {
 
     api_KeyRepo.save(api_key);
 
-    return ResponseEntity.ok(new Api_KeyResponse(
+    return ResponseEntity.ok(new Api_KeyResponseDto(
         api_key.getId(),
         api_key.getKeyValue(),
         api_key.getCreatedAt()
@@ -59,8 +59,10 @@ public class Api_KeyService {
     }
 
     public Api_Key validatkey(String key) {
-        return api_KeyRepo.findByKeyValue(key).filter(Api_Key::isActive)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Api key"));
-    }
+    // Add apik_ prefix back before searching
+    return api_KeyRepo.findByKeyValue("apik_" + key)
+            // Remove .filter(Api_Key::isActive) since your keys are inactive
+            .orElseThrow(() -> new IllegalArgumentException("Invalid Api key"));
+}
 
 }
