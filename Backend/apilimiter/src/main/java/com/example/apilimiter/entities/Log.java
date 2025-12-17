@@ -1,6 +1,9 @@
 package com.example.apilimiter.entities;
 
 import java.time.Instant;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +36,7 @@ public class Log {
     private Instant timestamp;
     
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "api_key",nullable = false)
     private Api_Key api_Key;
