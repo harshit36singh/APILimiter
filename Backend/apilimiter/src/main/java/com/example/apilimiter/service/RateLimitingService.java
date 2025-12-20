@@ -24,4 +24,11 @@ public class RateLimitingService {
                         Refill.intervally(api_Key.getRatelimit(), Duration.ofSeconds(api_Key.getRatelimitwindow()))))
                 .build());
     }
+
+    public boolean chkandconsume(Api_Key api_Key){
+        Bucket bucket=buckets.computeIfAbsent(api_Key.getId(), id->Bucket4j.builder().addLimit(Bandwidth.classic(api_Key.getRatelimit(), Refill.intervally(api_Key.getRatelimit(), Duration.ofSeconds(api_Key.getRatelimitwindow())))).build());
+
+        return bucket.tryConsume(1);
+
+    }
 }

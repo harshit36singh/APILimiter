@@ -13,6 +13,8 @@ import com.example.apilimiter.repositories.ProjectRepo;
 import com.example.apilimiter.service.Api_KeyService;
 import com.example.apilimiter.service.ClientUseAPIService;
 import com.example.apilimiter.service.LogService;
+import com.example.apilimiter.service.RateLimitingService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +26,7 @@ public class ClientUseAPIController {
     private final LogService logService;
     private final ProjectRepo projectRepo;
     private final Api_KeyService api_KeyService;
-
+    private final RateLimitingService rateLimitingService;
     @GetMapping("/{shortname}")
     public ResponseEntity<?> publicApiResult(
             @PathVariable String shortname,
@@ -46,6 +48,9 @@ public class ClientUseAPIController {
                         .body("This api_key doesn't belong to this project.");
             }
 
+            if(!rateLimitingService.chkandconsume(key)){
+                return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("Rate Limit Exceeded");
+            }
             String ip = request.getRemoteAddr();
             logService.logvisit(project.getId(), key, ip);
             Object result = clientUseAPIService.fetch(project.getApi_url());
