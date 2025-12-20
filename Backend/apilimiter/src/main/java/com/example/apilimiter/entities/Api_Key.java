@@ -43,5 +43,9 @@ public class Api_Key {
     @Column(nullable = false,updatable = false)
     private Instant createdAt;
 
+    private Long ratelimit;
+
+    private Long ratelimitwindow;
+
 
 }
