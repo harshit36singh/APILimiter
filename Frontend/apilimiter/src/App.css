@@ -1,3 +1,12 @@
 .container {
   padding: 2rem;
 }
+
+.radius-container {
+  display: inline-flex;
+  gap: 2px;
+}
+.radius-letter {
+  display: inline-block;
+  transition: transform 0.1s ease;
+}
