@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/usage")
+@RequestMapping("/usagegraph")
 public class UsageGraphController {
     private final UsageGraphService usageGraphService;
 

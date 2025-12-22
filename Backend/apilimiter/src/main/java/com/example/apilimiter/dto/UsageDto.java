@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UsageDto {
     
-    private Instant buckettime;
+    private Object buckettime;
     private Long count;
 }

@@ -44,12 +44,17 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-		
+
 		<!-- Bucket4j Core - ALL VERSIONS MUST MATCH -->
 		<dependency>
 			<groupId>com.bucket4j</groupId>
 			<artifactId>bucket4j_jdk11-core</artifactId>
 			<version>${bucket4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
 		<!-- Bucket4j Redis integration -->
@@ -58,7 +63,7 @@
 			<artifactId>bucket4j_jdk11-redis-common</artifactId>
 			<version>${bucket4j.version}</version>
 		</dependency>
-		
+
 		<!-- Bucket4j Lettuce (for Redis) -->
 		<dependency>
 			<groupId>com.bucket4j</groupId>
@@ -76,7 +81,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
