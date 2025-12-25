@@ -2,7 +2,6 @@ import React from "react";
 import LandingHeader from "./LandingHeader";
 import LandingHero from "./LandingHero";
 import LandingFeatures from "./LandingFeatures";
-import LandingStats from "./LandingStats";
 import LandingCTA from "./LandingCTA";
 import LandingFooter from "./LandingFooter";
 
@@ -22,7 +21,7 @@ const LandingPage = ({ isDarkMode, setIsDarkMode, setCurrentView }) => {
         setCurrentView={setCurrentView}
       />
       <LandingFeatures isDarkMode={isDarkMode} />
-      <LandingStats isDarkMode={isDarkMode} />
+    
       <LandingCTA
         isDarkMode={isDarkMode}
         setCurrentView={setCurrentView}
