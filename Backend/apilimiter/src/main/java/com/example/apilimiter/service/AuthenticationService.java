@@ -1,6 +1,5 @@
 package com.example.apilimiter.service;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,7 +34,7 @@ public class AuthenticationService {
 
         String token = authUtil.generateaccesstoken(user);
 
-        return new LoginResponseDto(token, user.getId());
+        return new LoginResponseDto(token, user.getId(),user.getUsername());
     }
 
     public RegisterResponseDto register(RegisterRequestDto registerRequestDto) {

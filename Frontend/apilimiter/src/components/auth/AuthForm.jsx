@@ -12,7 +12,7 @@ const AuthForm = ({
   return (
     <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }} className="auth-form">
       <h1 className="form-title">
-        {authMode === "login" ? "Sign in" : "Create Account"}
+        {authMode === "login" ? "Sign In" : "Create Account"}
       </h1>
 
       {/* Social Container */}
@@ -29,7 +29,7 @@ const AuthForm = ({
       </div>
 
       <span className="form-span">
-        {authMode === "login" ? "or Use Your Account" : "or Use Your Email For Registration"}
+        {authMode === "login" ? "or use your account" : "or use your email for registration"}
       </span>
 
       {/* USERNAME FIELD */}

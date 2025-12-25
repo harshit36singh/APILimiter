@@ -1,101 +1,85 @@
 import React from "react";
-import { Search, Bell, Sun, Moon, ChevronDown, ArrowLeft } from "lucide-react";
+import { Sun, Moon, ArrowLeft } from "lucide-react";
 
 const TopBar = ({ isDarkMode, setIsDarkMode, projectName, onBackToProjects }) => {
   const textClass = isDarkMode ? "text-white" : "text-gray-900";
-  const textSecondaryClass = isDarkMode ? "text-gray-400" : "text-gray-500";
+  const textSecondaryClass = isDarkMode ? "text-gray-400" : "text-gray-600";
   const borderClass = isDarkMode ? "border-gray-800/50" : "border-gray-200";
-  const bgClass = isDarkMode ? "bg-black" : "bg-gray-50";
-  const inputBgClass = isDarkMode ? "bg-gray-900/50" : "bg-white";
+  const bgClass = isDarkMode ? "bg-[#0a0a0a]" : "bg-[#fafafa]";
 
-  const currentDate = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const username = localStorage.getItem("username") || "User";
+  const initials = username
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .substring(0, 2);
 
   return (
     <header className={`${bgClass} border-b ${borderClass} px-6 py-4`}>
-      <div className="flex items-center justify-between gap-6">
-        {/* Left Section */}
-        <div className="flex items-center gap-4 flex-1">
-          {/* Back Button */}
+      <div className="flex items-center justify-between">
+        {/* Left Section - Breadcrumb */}
+        <div className="flex items-center gap-4">
           {onBackToProjects && (
             <button
               onClick={onBackToProjects}
-              className={`p-2 rounded-xl ${textSecondaryClass} hover:${textClass} transition-colors`}
+              className={`p-2 rounded-lg ${textSecondaryClass}`}
               title="Back to Projects"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
           )}
 
-          {/* Breadcrumb */}
-          <div>
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={onBackToProjects}
-                className={`text-sm ${textSecondaryClass} hover:${textClass} transition-colors`}
-              >
-                Dashboards
-              </button>
-              <span className={textSecondaryClass}>/</span>
-              <span className={`text-sm font-medium ${textClass}`}>
-                {projectName || "Default"}
-              </span>
-            </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onBackToProjects}
+              className={`text-sm ${textSecondaryClass}`}
+              style={{ fontFamily: '"DM Sans", sans-serif' }}
+            >
+              Projects
+            </button>
+            <span className={textSecondaryClass}>/</span>
+            <span
+              className={`text-sm font-medium ${textClass}`}
+              style={{ fontFamily: '"DM Sans", sans-serif' }}
+            >
+              {projectName || "Dashboard"}
+            </span>
           </div>
         </div>
 
         {/* Right Section */}
         <div className="flex items-center gap-3">
-          {/* Search */}
-          <div className={`relative hidden md:block`}>
-            <Search className={`w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 ${textSecondaryClass}`} />
-            <input
-              type="text"
-              placeholder="Search..."
-              className={`${inputBgClass} border ${borderClass} rounded-xl pl-10 pr-4 py-2 text-sm ${textClass} placeholder-gray-500 focus:outline-none focus:ring-2 ${
-                isDarkMode ? 'focus:ring-emerald-500/50' : 'focus:ring-emerald-500/30'
-              } w-64`}
-            />
-            <kbd className={`absolute right-3 top-1/2 transform -translate-y-1/2 px-2 py-0.5 text-xs ${textSecondaryClass} border ${borderClass} rounded`}>
-              ⌘K
-            </kbd>
-          </div>
-
           {/* Theme Toggle */}
           <button
             onClick={() => setIsDarkMode(!isDarkMode)}
-            className={`p-2 rounded-xl border ${borderClass} ${textSecondaryClass} hover:${textClass} transition-colors`}
+            className={`p-2 rounded-lg ${textSecondaryClass}`}
+            title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
           >
             {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
 
-          {/* Notifications */}
-          <button className={`p-2 rounded-xl border ${borderClass} ${textSecondaryClass} hover:${textClass} transition-colors relative`}>
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-emerald-500 rounded-full"></span>
-          </button>
-
           {/* User Menu */}
-          <button className={`flex items-center gap-3 px-3 py-2 rounded-xl border ${borderClass} hover:bg-opacity-50 transition-colors`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm ${
-              isDarkMode ? 'bg-emerald-500/10 text-emerald-400' : 'bg-emerald-500/20 text-emerald-700'
-            }`}>
-              JC
+          <div className="flex items-center gap-3 pl-3">
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm ${
+                isDarkMode
+                  ? "bg-gray-800 text-gray-300"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+              style={{ fontFamily: '"DM Sans", sans-serif' }}
+            >
+              {initials}
             </div>
-            <div className="hidden md:block text-left">
-              <div className={`text-sm font-medium ${textClass}`}>
-                Jonathan Cook
-              </div>
-              <div className={`text-xs ${textSecondaryClass}`}>
-                {currentDate}
+            <div className="hidden md:block">
+              <div
+                className={`text-sm font-medium ${textClass}`}
+                style={{ fontFamily: '"DM Sans", sans-serif' }}
+              >
+                {username}
               </div>
             </div>
-            <ChevronDown className={`w-4 h-4 ${textSecondaryClass}`} />
-          </button>
+          </div>
         </div>
       </div>
     </header>

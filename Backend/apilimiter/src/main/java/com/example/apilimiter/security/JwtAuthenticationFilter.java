@@ -37,6 +37,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         boolean skip = path.startsWith("/auth") || 
                        path.startsWith("/apilimiter") ||
                        path.startsWith("/usagegraph")||
+                       path.startsWith("/swagger-ui.html")||
+                       path.startsWith("/v3/api-docs/**")||
+                       path.startsWith("/swagger-ui/**")||
                        request.getMethod().equals("OPTIONS");
         
         System.out.println("Skip filter: " + skip);

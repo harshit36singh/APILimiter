@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Play, RotateCcw } from "lucide-react";
 
 const ApiTestPage = ({ projectId, project, isDarkMode }) => {
   const [keys, setKeys] = useState([]);
@@ -11,10 +12,11 @@ const ApiTestPage = ({ projectId, project, isDarkMode }) => {
 
   const token = localStorage.getItem("jwt");
 
-  const textClass = isDarkMode ? "text-white" : "text-black";
-  const borderClass = isDarkMode ? "border-gray-800" : "border-gray-200";
-  const bgClass = isDarkMode ? "bg-black" : "bg-white";
-  const secondaryTextClass = isDarkMode ? "text-gray-400" : "text-gray-600";
+  const textClass = isDarkMode ? "text-white" : "text-gray-900";
+  const textSecondaryClass = isDarkMode ? "text-gray-400" : "text-gray-600";
+  const borderClass = isDarkMode ? "border-gray-800/50" : "border-gray-200";
+  const cardBgClass = isDarkMode ? "bg-[#111111]" : "bg-white";
+  const inputBgClass = isDarkMode ? "bg-gray-900/50" : "bg-gray-50";
 
   useEffect(() => {
     const fetchKeys = async () => {
@@ -45,9 +47,6 @@ const ApiTestPage = ({ projectId, project, isDarkMode }) => {
     if (projectId) fetchKeys();
   }, [projectId, token]);
 
-  /* =========================
-     TEST API
-     ========================= */
   const testApi = async () => {
     if (!selectedKey) return alert("Select an API key");
 
@@ -96,124 +95,170 @@ const ApiTestPage = ({ projectId, project, isDarkMode }) => {
   };
 
   return (
-    <div className="max-w-4xl">
-      <h2 className="text-2xl font-light mb-6">Test API</h2>
+    <div className="space-y-6 max-w-4xl">
+      {/* Header */}
+      <div>
+        <h1
+          className={`text-3xl font-normal mb-2 ${textClass}`}
+          style={{
+            fontFamily: '"Instrument Serif", Georgia, serif',
+            letterSpacing: "-0.02em",
+          }}
+        >
+          Test API
+        </h1>
+        <p
+          className={`text-sm ${textSecondaryClass}`}
+          style={{ fontFamily: '"DM Sans", sans-serif' }}
+        >
+          Send test requests to your API endpoint
+        </p>
+      </div>
 
-      {/* API Endpoint Display */}
-      <div className={`border ${borderClass} p-4 mb-6 ${bgClass}`}>
-        <div className="flex items-center gap-3 mb-2">
-          <span className="px-2 py-1 text-xs font-mono bg-green-500 text-white rounded">
+      {/* Endpoint Card */}
+      <div className={`${cardBgClass} border ${borderClass} rounded-2xl p-6`}>
+        <div className="flex items-center gap-3 mb-3">
+          <span
+            className={`px-2 py-1 text-xs font-mono rounded ${
+              isDarkMode
+                ? "bg-emerald-500/10 text-emerald-400"
+                : "bg-emerald-50 text-emerald-700"
+            }`}
+          >
             GET
           </span>
-          <code className="font-mono text-sm">
+          <code
+            className={`font-mono text-sm ${textClass}`}
+          >
             /apilimiter/{project.shortname}
           </code>
         </div>
-        <p className={`text-xs ${secondaryTextClass} mt-2`}>
+        <p
+          className={`text-xs ${textSecondaryClass}`}
+          style={{ fontFamily: '"DM Sans", sans-serif' }}
+        >
           Base URL: http://localhost:8080
         </p>
       </div>
 
-      {/* API Key Selection */}
-      <div className="mb-6">
-        <label className={`block text-sm mb-2 ${secondaryTextClass}`}>
-          API Key
-        </label>
-        <select
-          value={selectedKey}
-          onChange={(e) => setSelectedKey(e.target.value)}
-          className={`border ${borderClass} ${bgClass} px-3 py-2 w-full ${textClass} focus:outline-none focus:ring-2 focus:ring-blue-500`}
-        >
-          <option value="" className={bgClass}>
-            -- Select API Key --
-          </option>
-          {keys.map((k) => (
-            <option key={k.id} value={k.stripped} className={bgClass}>
-              {k.stripped.slice(0, 6)}****{k.stripped.slice(-4)}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Action Buttons */}
-      <div className="flex gap-3 mb-6">
-        <button
-          onClick={testApi}
-          disabled={loading || !selectedKey}
-          className={`px-6 py-2 border ${borderClass} ${
-            loading || !selectedKey
-              ? "opacity-50 cursor-not-allowed"
-              : "hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-colors"
-          }`}
-        >
-          {loading ? (
-            <span className="flex items-center gap-2">
-              <svg
-                className="animate-spin h-4 w-4"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
-              Testing...
-            </span>
-          ) : (
-            "Send Request"
-          )}
-        </button>
-
-        {(result || error) && (
-          <button
-            onClick={clearResults}
-            className={`px-6 py-2 border ${borderClass} hover:bg-red-500 hover:text-white hover:border-red-500 transition-colors`}
+      {/* Test Form */}
+      <div className={`${cardBgClass} border ${borderClass} rounded-2xl p-6`}>
+        <div className="mb-6">
+          <label
+            className={`block text-sm font-medium mb-2 ${textClass}`}
+            style={{ fontFamily: '"DM Sans", sans-serif' }}
           >
-            Clear
+            API Key
+          </label>
+          <select
+            value={selectedKey}
+            onChange={(e) => setSelectedKey(e.target.value)}
+            className={`w-full ${inputBgClass} border ${borderClass} rounded-lg px-4 py-2.5 text-sm ${textClass} focus:outline-none`}
+            style={{ fontFamily: '"DM Sans", sans-serif' }}
+          >
+            <option value="">-- Select API Key --</option>
+            {keys.map((k) => (
+              <option key={k.id} value={k.stripped}>
+                {k.stripped.slice(0, 8)}****{k.stripped.slice(-6)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="flex gap-3">
+          <button
+            onClick={testApi}
+            disabled={loading || !selectedKey}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium text-white ${
+              isDarkMode ? "bg-emerald-500" : "bg-emerald-600"
+            } ${
+              loading || !selectedKey ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            style={{ fontFamily: '"DM Sans", sans-serif' }}
+          >
+            {loading ? (
+              <>
+                <div
+                  className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                  style={{ animation: "spin 0.8s linear infinite" }}
+                ></div>
+                Testing...
+              </>
+            ) : (
+              <>
+                <Play className="w-4 h-4" />
+                Send Request
+              </>
+            )}
           </button>
-        )}
+
+          {(result || error) && (
+            <button
+              onClick={clearResults}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium border ${borderClass} ${textSecondaryClass}`}
+              style={{ fontFamily: '"DM Sans", sans-serif' }}
+            >
+              <RotateCcw className="w-4 h-4" />
+              Clear
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Response Metadata */}
       {(result || error) && responseTime && (
-        <div className={`border ${borderClass} p-4 mb-4 ${bgClass}`}>
-          <div className="flex items-center gap-6">
+        <div className={`${cardBgClass} border ${borderClass} rounded-2xl p-6`}>
+          <div className="flex items-center gap-8">
             <div>
-              <span className={`text-xs ${secondaryTextClass}`}>Status:</span>
-              <span
-                className={`ml-2 font-mono text-sm ${
+              <div
+                className={`text-xs ${textSecondaryClass} mb-1`}
+                style={{ fontFamily: '"DM Sans", sans-serif' }}
+              >
+                Status
+              </div>
+              <div
+                className={`text-base font-mono ${
                   statusCode >= 200 && statusCode < 300
-                    ? "text-green-500"
+                    ? "text-emerald-500"
                     : "text-red-500"
                 }`}
               >
                 {statusCode || "Error"}
-              </span>
+              </div>
             </div>
+
+            <div className={`h-8 w-px ${borderClass}`}></div>
+
             <div>
-              <span className={`text-xs ${secondaryTextClass}`}>Time:</span>
-              <span className={`ml-2 font-mono text-sm ${textClass}`}>
+              <div
+                className={`text-xs ${textSecondaryClass} mb-1`}
+                style={{ fontFamily: '"DM Sans", sans-serif' }}
+              >
+                Response Time
+              </div>
+              <div
+                className={`text-base font-mono ${textClass}`}
+              >
                 {responseTime}ms
-              </span>
+              </div>
             </div>
+
+            <div className={`h-8 w-px ${borderClass}`}></div>
+
             <div>
-              <span className={`text-xs ${secondaryTextClass}`}>Size:</span>
-              <span className={`ml-2 font-mono text-sm ${textClass}`}>
+              <div
+                className={`text-xs ${textSecondaryClass} mb-1`}
+                style={{ fontFamily: '"DM Sans", sans-serif' }}
+              >
+                Size
+              </div>
+              <div
+                className={`text-base font-mono ${textClass}`}
+              >
                 {result
                   ? `${(JSON.stringify(result).length / 1024).toFixed(2)} KB`
                   : "N/A"}
-              </span>
+              </div>
             </div>
           </div>
         </div>
@@ -221,12 +266,19 @@ const ApiTestPage = ({ projectId, project, isDarkMode }) => {
 
       {/* Success Response */}
       {result && (
-        <div className={`border ${borderClass} overflow-hidden`}>
-          <div className={`px-4 py-2 border-b ${borderClass} ${bgClass}`}>
-            <h3 className="text-sm font-medium">Response</h3>
+        <div className={`${cardBgClass} border ${borderClass} rounded-2xl overflow-hidden`}>
+          <div className={`px-6 py-4 border-b ${borderClass}`}>
+            <h3
+              className={`text-sm font-medium ${textClass}`}
+              style={{ fontFamily: '"DM Sans", sans-serif' }}
+            >
+              Response
+            </h3>
           </div>
-          <div className={`p-4 ${bgClass} overflow-x-auto`}>
-            <pre className={`text-xs ${textClass} font-mono`}>
+          <div className="p-6 overflow-x-auto">
+            <pre
+              className={`text-xs ${textClass} font-mono`}
+            >
               {JSON.stringify(result, null, 2)}
             </pre>
           </div>
@@ -235,11 +287,16 @@ const ApiTestPage = ({ projectId, project, isDarkMode }) => {
 
       {/* Error Response */}
       {error && (
-        <div className="border border-red-500 overflow-hidden">
-          <div className="px-4 py-2 bg-red-500 bg-opacity-10 border-b border-red-500">
-            <h3 className="text-sm font-medium text-red-500">Error</h3>
+        <div className={`${cardBgClass} border-2 border-red-500/30 rounded-2xl overflow-hidden`}>
+          <div className="px-6 py-4 border-b border-red-500/30 bg-red-500/5">
+            <h3
+              className="text-sm font-medium text-red-500"
+              style={{ fontFamily: '"DM Sans", sans-serif' }}
+            >
+              Error
+            </h3>
           </div>
-          <div className="p-4 bg-red-500 bg-opacity-5">
+          <div className="p-6">
             <p className="text-sm text-red-400 font-mono">{error}</p>
           </div>
         </div>
@@ -248,26 +305,30 @@ const ApiTestPage = ({ projectId, project, isDarkMode }) => {
       {/* Empty State */}
       {!result && !error && !loading && (
         <div
-          className={`border ${borderClass} border-dashed p-12 text-center ${bgClass}`}
+          className={`${cardBgClass} border ${borderClass} border-dashed rounded-2xl p-12 text-center`}
         >
-          <svg
-            className={`mx-auto h-12 w-12 ${secondaryTextClass} mb-4`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+          <div
+            className={`${
+              isDarkMode ? "bg-gray-800" : "bg-gray-100"
+            } w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4`}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1}
-              d="M8 16l-4-4m0 0l4-4m-4 4h16"
-            />
-          </svg>
-          <p className={`${secondaryTextClass}`}>
-            Select an API key and click "Send Request" to test your API
+            <Play className={`w-8 h-8 ${textSecondaryClass}`} />
+          </div>
+          <p
+            className={`text-sm ${textSecondaryClass}`}
+            style={{ fontFamily: '"DM Sans", sans-serif' }}
+          >
+            Select an API key and click "Send Request" to test your endpoint
           </p>
         </div>
       )}
+
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };
