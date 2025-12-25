@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: apilimiter-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: apilimiter
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: apilimiter
+      MYSQL_PASSWORD: apilimiter
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: apilimiter-redis
+    restart: always
+
+  backend:
+    build: ./Backend/apilimiter
+    container_name: apilimiter-backend
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      JWT_SECRETKEY: docker-secret
+    restart: always
+
+  frontend:
+    build: ./frontend/apilimiter
+    container_name: apilimiter-frontend
+    ports:
+      - "5173:5173"
+
+volumes:
+  mysql_data:

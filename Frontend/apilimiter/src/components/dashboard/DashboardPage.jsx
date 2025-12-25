@@ -32,9 +32,6 @@ const DashboardPage = ({ isDarkMode, setIsDarkMode }) => {
   const borderClass = isDarkMode ? "border-gray-800/50" : "border-gray-200";
   const cardBgClass = isDarkMode ? "bg-[#111111]" : "bg-white";
 
-  /* =========================
-     FETCH PROJECT & ANALYTICS
-     ========================= */
   useEffect(() => {
     if (!projectId) return;
 
@@ -130,9 +127,6 @@ const DashboardPage = ({ isDarkMode, setIsDarkMode }) => {
     );
   }
 
-  /* =========================
-     DASHBOARD OVERVIEW CONTENT
-     ========================= */
   const renderDashboardOverview = () => {
     const totalRequests = dailyReport.reduce(
       (sum, item) => sum + (item.count || 0),
@@ -636,9 +630,6 @@ const DashboardPage = ({ isDarkMode, setIsDarkMode }) => {
     );
   };
 
-  /* =========================
-     PAGE CONTENT ROUTER
-     ========================= */
   const renderPageContent = () => {
     switch (activePage) {
       case "dashboard":
