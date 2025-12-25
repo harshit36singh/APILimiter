@@ -178,7 +178,6 @@ http://localhost:8080/swagger-ui/index.html
 ```
 
 **Supports:**
-- JWT authorization
 - Public & secured endpoint testing
 - Request/response schemas
 
