@@ -755,14 +755,4 @@ This project demonstrates:
 
 ---
 
-## 🧑‍💻 Author
-
-**Harshit Singh**  
-Backend Developer | Full-Stack Engineer
-
-**Skills:** Java | Spring Boot | Redis | React | Docker | Microservices  
-**Focus:** Scalable and secure backend systems
-
----
-
 
